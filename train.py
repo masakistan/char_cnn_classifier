@@ -1,5 +1,7 @@
 import sys
 
+import numpy as np
+
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -36,10 +38,10 @@ def train(data_fpath, index_fpath):
             #print(bidx, batch['transcriptions_one_hot'])
 
             out = m(batch['transcriptions_one_hot'])
-            #print('pred', F.sigmoid(out))
-            #print('true', batch['labels'])
             loss = criterion(out, batch['labels'])
-            print('loss', loss)
+            print('epoch:  {}\tstep: {}\tloss: {:.4f}'.format(eidx, bidx, loss.item()))
+            print('pred', (F.sigmoid(out).data > 0.5).numpy().astype(np.int))
+            print('true', batch['labels'].numpy().astype(np.int))
             loss.backward()
             optimizer.step()
 

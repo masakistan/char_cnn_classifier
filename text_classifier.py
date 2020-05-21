@@ -59,12 +59,12 @@ class TextClassifier(nn.Module):
         '''
         x_embed = self.embedding(x)  # N x L x 128
         x_embed = x_embed.permute(0, 2, 1) # N x 128 x L
-        x = self.max_pool(F.relu(self.bn1(self.conv1(x_embed))))
-        x = self.max_pool(F.relu(self.bn2(self.conv2(x))))
-        x = F.relu(self.bn3(self.conv3(x)))
-        x = F.relu(self.bn4(self.conv4(x)))
-        x = F.relu(self.bn5(self.conv5(x)))
-        x = self.max_pool(F.relu(self.bn6(self.conv6(x))))
+        x = self.max_pool(self.bn1(F.relu(self.conv1(x_embed))))
+        x = self.max_pool(self.bn2(F.relu(self.conv2(x))))
+        x = self.bn3(F.relu(self.conv3(x)))
+        x = self.bn4(F.relu(self.conv4(x)))
+        x = self.bn5(F.relu(self.conv5(x)))
+        x = self.max_pool(self.bn6(F.relu(self.conv6(x))))
         x = torch.flatten(x, start_dim=1)
 
         x = F.relu(self.fc1(x))

@@ -9,37 +9,37 @@ class TextClassifier(nn.Module):
         self.max_pool = nn.MaxPool1d(3)
 
         self.embedding = nn.Embedding(ntoks, 128)
-        self.cnn1 = nn.Conv1d(
+        self.conv1 = nn.Conv1d(
             128,
             256,
             7,
         )
         self.bn1 = nn.BatchNorm1d(256)
-        self.cnn2 = nn.Conv1d(
+        self.conv2 = nn.Conv1d(
             256,
             256,
             7,
         )
         self.bn2 = nn.BatchNorm1d(256)
-        self.cnn3 = nn.Conv1d(
+        self.conv3 = nn.Conv1d(
             256,
             256,
             3,
         )
         self.bn3 = nn.BatchNorm1d(256)
-        self.cnn4 = nn.Conv1d(
+        self.conv4 = nn.Conv1d(
             256,
             256,
             3,
         )
         self.bn4 = nn.BatchNorm1d(256)
-        self.cnn5 = nn.Conv1d(
+        self.conv5 = nn.Conv1d(
             256,
             256,
             3,
         )
         self.bn5 = nn.BatchNorm1d(256)
-        self.cnn6 = nn.Conv1d(
+        self.conv6 = nn.Conv1d(
             256,
             256,
             3,
@@ -59,12 +59,12 @@ class TextClassifier(nn.Module):
         '''
         x_embed = self.embedding(x)  # N x L x 128
         x_embed = x_embed.permute(0, 2, 1) # N x 128 x L
-        x = self.max_pool(F.relu(self.bn1(self.cnn1(x_embed))))
-        x = self.max_pool(F.relu(self.bn2(self.cnn2(x))))
-        x = F.relu(self.bn3(self.cnn3(x)))
-        x = F.relu(self.bn4(self.cnn4(x)))
-        x = F.relu(self.bn5(self.cnn5(x)))
-        x = self.max_pool(F.relu(self.bn6(self.cnn6(x))))
+        x = self.max_pool(F.relu(self.bn1(self.conv1(x_embed))))
+        x = self.max_pool(F.relu(self.bn2(self.conv2(x))))
+        x = F.relu(self.bn3(self.conv3(x)))
+        x = F.relu(self.bn4(self.conv4(x)))
+        x = F.relu(self.bn5(self.conv5(x)))
+        x = self.max_pool(F.relu(self.bn6(self.conv6(x))))
         x = torch.flatten(x, start_dim=1)
 
         x = F.relu(self.fc1(x))

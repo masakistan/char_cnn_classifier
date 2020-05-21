@@ -12,7 +12,6 @@ def char_to_idx(t, index):
     return indexed
 
 
-
 class TextData(Dataset):
     def __init__(self, data_fpath, index_fpath):
         with open(index_fpath, 'r') as fh:
